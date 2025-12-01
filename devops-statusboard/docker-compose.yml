@@ -1,0 +1,14 @@
+services:
+  backend:
+    build: ./backend
+    ports:
+      - "5000:5000"
+
+  frontend:
+    build: ./frontend
+    environment:
+      - VITE_API_TARGET=http://backend:5000
+    ports:
+      - "5173:5173"
+    depends_on:
+      - backend
