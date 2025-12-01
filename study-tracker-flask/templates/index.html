@@ -1,0 +1,29 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>Study Tracker</title>
+  </head>
+  <body>
+    <h1>Study Tracker</h1>
+
+    <form method="post">
+      <input name="name" placeholder="Course name" required />
+      <input name="credits" type="number" placeholder="Credits" required />
+      <input name="grade" type="number" step="0.1" placeholder="Grade" required />
+      <button type="submit">Add course</button>
+    </form>
+
+    <h2>Courses</h2>
+    <ul>
+      {% for course in courses %}
+      <li>
+        {{ course.name }} – {{ course.credits }} ECTS – grade: {{ course.grade }}
+      </li>
+      {% endfor %}
+    </ul>
+
+    <h3>Total credits: {{ total_credits }}</h3>
+    <h3>Weighted average grade: {{ avg_grade }}</h3>
+  </body>
+</html>
