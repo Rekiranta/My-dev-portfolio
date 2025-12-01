@@ -1,0 +1,139 @@
+{% extends "base.html" %}
+
+{% block title %}Project Planner{% endblock %}
+
+{% block content %}
+<section class="layout">
+  <section class="panel">
+    <h2 class="panel-title">Create new project</h2>
+    <form method="post" class="form-grid">
+      <label>
+        <span>Title</span>
+        <input name="title" placeholder="Project title" required />
+      </label>
+
+      <label class="full-width">
+        <span>Description</span>
+        <textarea
+          name="description"
+          placeholder="Short description of the project"
+          rows="3"
+        ></textarea>
+      </label>
+
+      <label>
+        <span>Status</span>
+        <select name="status">
+          <option value="todo">To do</option>
+          <option value="in_progress">In progress</option>
+          <option value="done">Done</option>
+        </select>
+      </label>
+
+      <label>
+        <span>Due date</span>
+        <input name="due_date" type="date" />
+      </label>
+
+      <button type="submit" class="primary-btn full-width">
+        Add project
+      </button>
+    </form>
+  </section>
+
+  <section class="panel">
+    <div class="panel-header">
+      <h2 class="panel-title">Projects</h2>
+      <div class="tabs">
+        <a
+          href="{{ url_for('index', status='all') }}"
+          class="tab {{ 'tab-active' if status_filter == 'all' else '' }}"
+          >All</a
+        >
+        <a
+          href="{{ url_for('index', status='todo') }}"
+          class="tab {{ 'tab-active' if status_filter == 'todo' else '' }}"
+          >To do</a
+        >
+        <a
+          href="{{ url_for('index', status='in_progress') }}"
+          class="tab {{ 'tab-active' if status_filter == 'in_progress' else '' }}"
+          >In progress</a
+        >
+        <a
+          href="{{ url_for('index', status='done') }}"
+          class="tab {{ 'tab-active' if status_filter == 'done' else '' }}"
+          >Done</a
+        >
+      </div>
+    </div>
+
+    <div class="project-list">
+      {% if projects %}
+      {% for project in projects %}
+      <article class="project-card">
+        <header class="project-header">
+          <h3>{{ project.title }}</h3>
+          <span
+            class="status-pill
+              {% if project.status=='todo' %}status-todo
+              {% elif project.status=='in_progress' %}status-progress
+              {% else %}status-done{% endif %}"
+          >
+            {% if project.status == 'todo' %}
+            To do
+            {% elif project.status == 'in_progress' %}
+            In progress
+            {% else %}
+            Done
+            {% endif %}
+          </span>
+        </header>
+
+        {% if project.description %}
+        <p class="project-description">{{ project.description }}</p>
+        {% endif %}
+
+        <div class="project-meta">
+          {% if project.due_date %}
+          <span class="meta-item">
+            <strong>Due:</strong> {{ project.due_date }}
+          </span>
+          {% endif %}
+          <span class="meta-item">ID: {{ project.id }}</span>
+        </div>
+
+        <div class="project-actions">
+          <span>Update status:</span>
+          <div class="action-buttons">
+            <a
+              href="{{ url_for('set_status', project_id=project.id, status='todo') }}"
+              class="ghost-btn"
+              >To do</a
+            >
+            <a
+              href="{{ url_for('set_status', project_id=project.id, status='in_progress') }}"
+              class="ghost-btn"
+              >In progress</a
+            >
+            <a
+              href="{{ url_for('set_status', project_id=project.id, status='done') }}"
+              class="ghost-btn"
+              >Done</a
+            >
+          </div>
+          <a
+            href="{{ url_for('delete_project', project_id=project.id) }}"
+            class="ghost-btn danger"
+            >Delete</a
+          >
+        </div>
+      </article>
+      {% endfor %}
+      {% else %}
+      <p class="empty-state">No projects yet. Add your first project on the left.</p>
+      {% endif %}
+    </div>
+  </section>
+</section>
+{% endblock %}

@@ -1,0 +1,29 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>{% block title %}Project Planner{% endblock %}</title>
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='style.css') }}"
+    />
+  </head>
+  <body>
+    <div class="app-shell">
+      <header class="topbar">
+        <div class="logo">Project Planner</div>
+        <div class="topbar-right">
+          <span class="topbar-pill">Flask + SQLite</span>
+        </div>
+      </header>
+
+      <main class="main">
+        {% block content %}{% endblock %}
+      </main>
+
+      <footer class="footer">
+        <span>Demo project for portfolio – built with Flask &amp; SQLite</span>
+      </footer>
+    </div>
+  </body>
+</html>
