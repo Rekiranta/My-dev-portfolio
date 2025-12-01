@@ -3,9 +3,11 @@ from models import get_connection, init_db
 
 app = Flask(__name__)
 
-@app.before_first_request
-def setup():
-    init_db()
+
+
+
+init_db()
+
 
 @app.route("/", methods=["GET", "POST"])
 def index():
