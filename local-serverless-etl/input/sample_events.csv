@@ -1,0 +1,7 @@
+event_time,event_type,payload
+2025-12-01T10:00:00Z,login,{"user_id": 1}
+2025-12-01T10:05:00Z,click,{"user_id": 1, "page": "home"}
+2025-12-01T10:10:00Z,logout,{"user_id": 1}
+2025-12-01T10:15:00Z,login,{"user_id": 2}
+2025-12-01T10:20:00Z,view,{"user_id": 2, "page": "products"}
+2025-12-01T10:25:00Z,purchase,{"user_id": 2, "amount": 99.99}                           

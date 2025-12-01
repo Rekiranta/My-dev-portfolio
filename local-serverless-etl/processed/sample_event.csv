@@ -1,0 +1,7 @@
+event_id,user_id,event_type,value,created_at
+e1,u1,click,1.0,2025-12-01T10:00:00Z
+e2,u2,view,0.0,2025-12-01T10:05:00Z
+e3,u1,purchase,29.90,2025-12-01T10:10:00Z
+e4,u3,click,1.0,2025-12-01T10:15:00Z
+e5,u2,view,0.0,2025-12-01T10:20:00Z
+e6,u4,purchase,49.99,2025-12-01T10:25:00Z                   
