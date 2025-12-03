@@ -1,0 +1,62 @@
+﻿<!doctype html>
+<html lang="fi">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Realtime Board</title>
+    <style>
+      :root { color-scheme: light dark; }
+      body { font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial; margin: 0; }
+      .wrap { max-width: 860px; margin: 0 auto; padding: 24px; }
+      .card { border: 1px solid rgba(127,127,127,.35); border-radius: 16px; padding: 16px; }
+      h1 { margin: 0 0 8px; font-size: 20px; }
+      .muted { opacity: .75; margin: 0 0 16px; }
+      form { display: grid; grid-template-columns: 1fr auto; gap: 10px; margin: 14px 0 16px; }
+      input, button { border-radius: 12px; border: 1px solid rgba(127,127,127,.35); padding: 10px 12px; font-size: 14px; }
+      button { cursor: pointer; }
+      ul { list-style: none; padding: 0; margin: 0; }
+      li { display: grid; grid-template-columns: auto 1fr auto; gap: 10px; align-items: center;
+           padding: 10px; border-radius: 12px; border: 1px solid rgba(127,127,127,.20); margin-bottom: 10px; }
+      .text.done { text-decoration: line-through; opacity: .7; }
+      .pill { display: inline-block; padding: 3px 8px; border-radius: 999px; border: 1px solid rgba(127,127,127,.35); font-size: 12px; }
+      .row { display:flex; gap: 10px; align-items: center; justify-content: space-between; }
+      .danger { border-color: rgba(255, 80, 80, .55); }
+      a { color: inherit; }
+      code { opacity: .85; }
+    </style>
+  </head>
+  <body>
+    <div class="wrap">
+      <div class="card">
+        <div class="row">
+          <div>
+            <h1>Realtime Board</h1>
+            <p class="muted">Avaa sama sivu kahteen selainikkunaan ja katso päivitysten synkkaus (WebSocket).</p>
+          </div>
+          <div class="pill" id="status">connecting…</div>
+        </div>
+
+        <form id="form">
+          <input id="text" type="text" maxlength="140" placeholder="Kirjoita tehtävä ja paina Enter…" autocomplete="off" />
+          <button id="addBtn" type="submit">Add</button>
+        </form>
+
+        <div class="row" style="margin-bottom: 10px;">
+          <div class="pill">Items: <span id="count">0</span></div>
+          <div style="display:flex; gap:10px;">
+            <button id="clearDone" type="button">Clear done</button>
+            <button id="clearAll" type="button" class="danger">Clear all</button>
+          </div>
+        </div>
+
+        <ul id="list"></ul>
+
+        <p class="muted" style="margin-top: 14px;">
+          API: <code>GET /health</code>, <code>GET /api/state</code>, WS: <code>/ws</code>
+        </p>
+      </div>
+    </div>
+
+    <script type="module" src="/app.js"></script>
+  </body>
+</html>
