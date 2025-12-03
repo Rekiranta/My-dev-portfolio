@@ -1,0 +1,79 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>SSE Task Feed</title>
+    <style>
+      body{font-family:system-ui,Segoe UI,Arial;margin:24px}
+      .row{display:flex;gap:8px;align-items:center}
+      input{padding:8px;width:320px}
+      button{padding:8px 12px;cursor:pointer}
+      li{margin:8px 0}
+      .done{text-decoration:line-through;opacity:.6}
+      small{opacity:.7}
+    </style>
+  </head>
+  <body>
+    <h1>SSE Task Feed</h1>
+    <div class="row">
+      <input id="text" placeholder="New task..." />
+      <button id="add">Add</button>
+      <small id="status">connecting…</small>
+    </div>
+    <ul id="list"></ul>
+
+    <script>
+      const $ = (id) => document.getElementById(id);
+      const list = $("list");
+      const status = $("status");
+
+      function render(state){
+        list.innerHTML = "";
+        for (const t of state.tasks){
+          const li = document.createElement("li");
+          const cb = document.createElement("input");
+          cb.type = "checkbox";
+          cb.checked = !!t.done;
+          cb.onchange = () => fetch(`/api/tasks/${t.id}`, {
+            method:"PATCH",
+            headers:{ "content-type":"application/json" },
+            body: JSON.stringify({ done: cb.checked })
+          });
+
+          const span = document.createElement("span");
+          span.textContent = " " + t.text + " ";
+          if (t.done) span.className = "done";
+
+          const del = document.createElement("button");
+          del.textContent = "Delete";
+          del.onclick = () => fetch(`/api/tasks/${t.id}`, { method:"DELETE" });
+
+          li.appendChild(cb);
+          li.appendChild(span);
+          li.appendChild(del);
+          list.appendChild(li);
+        }
+      }
+
+      $("add").onclick = async () => {
+        const text = $("text").value.trim();
+        if(!text) return;
+        $("text").value = "";
+        await fetch("/api/tasks", {
+          method:"POST",
+          headers:{ "content-type":"application/json" },
+          body: JSON.stringify({ text })
+        });
+      };
+
+      const es = new EventSource("/events");
+      es.onopen = () => status.textContent = "connected";
+      es.onerror = () => status.textContent = "disconnected (retrying)";
+      es.onmessage = (e) => {
+        const msg = JSON.parse(e.data);
+        if (msg.type === "state") render(msg.state);
+      };
+    </script>
+  </body>
+</html>
