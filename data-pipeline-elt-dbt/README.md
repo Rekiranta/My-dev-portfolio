@@ -1,20 +1,55 @@
-# ELT Pipeline: Raw → Clean → Analytics (DuckDB + dbt + Validation)
+# ELT Pipeline: Raw → Staging → Marts (DuckDB + dbt + Pandera)
 
-A small but production-flavored ELT pipeline for a data engineering portfolio:
+This project is a small, end-to-end ELT pipeline that takes source CSV files, validates them, loads them into a local warehouse (DuckDB), and builds analytics-ready tables using dbt.
 
-- **Validate** source data (schema + business rules)
-- **Ingest** into DuckDB `raw.*`
-- **Transform** with dbt into `staging` and `marts` layers (dim/fact)
-- **Test** with dbt tests + CI
+It’s designed to be:
 
-## Architecture (logical)
+- **Easy to run locally** (single-file DuckDB warehouse, minimal dependencies)
+- **Reproducible** (clear steps, deterministic transformations)
+- **Quality-aware** (data validation + automated tests + CI)
+
+---
+
+## What it does
+
+### Inputs
+
+Two CSV files:
+
+- `data/source/customers.csv`
+- `data/source/orders.csv`
+
+### Pipeline steps
+
+1. **Validate** the source data (schema + business rules) using Pandera
+2. **Ingest** validated data into DuckDB as `raw.customers` and `raw.orders`
+3. **Transform** with dbt into layered models:
+   - **Staging** (`stg_*`): cleaned, typed views
+   - **Marts** (`dim_*`, `fct_*`): analytics-friendly tables
+
+### Outputs
+
+DuckDB database file:
+
+- `warehouse/analytics.duckdb`
+
+Objects created:
+
+- **Raw tables**: `raw.customers`, `raw.orders`
+- **Staging views**: `stg_customers`, `stg_orders`
+- **Mart tables**: `dim_customers`, `fct_orders`
+
+---
+
+## Architecture
 
 ```mermaid
 flowchart LR
-  A[CSV Source] --> B[Validation: pandera]
-  B -->|pass| C[DuckDB raw.*]
-  C --> D[dbt staging views]
-  D --> E[dbt marts tables (dim/fct)]
+  A[CSV Sources] --> B[Validation: Pandera]
+  B -->|pass| C[DuckDB: raw.*]
+  B -->|fail| X[Stop and show validation errors]
+
+  C --> D[dbt: staging models (stg_*)]
+  D --> E[dbt: mart models (dim_*, fct_*)]
   E --> F[Analytics-ready tables]
-  B -->|fail| X[Stop + Report errors]
 ```
