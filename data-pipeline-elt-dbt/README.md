@@ -1,6 +1,6 @@
 # ELT Pipeline: Raw → Staging → Marts (DuckDB + dbt + Pandera)
 
-This project is a small, end-to-end ELT pipeline that takes source CSV files, validates them, loads them into a local warehouse (DuckDB), and builds analytics-ready tables using dbt.
+This project is a small, end to end ELT pipeline that takes source CSV files, validates them, loads them into a local warehouse (DuckDB), and builds analytics-ready tables using dbt.
 
 It’s designed to be:
 
