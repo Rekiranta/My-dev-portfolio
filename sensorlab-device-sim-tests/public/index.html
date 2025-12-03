@@ -1,0 +1,84 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>SensorLab UI (SSE)</title>
+    <style>
+      body { font-family: system-ui, Arial, sans-serif; margin: 20px; }
+      .row { display:flex; gap: 12px; flex-wrap: wrap; }
+      .card { border: 1px solid #ddd; border-radius: 12px; padding: 12px; min-width: 280px; }
+      code { background:#f6f6f6; padding: 2px 6px; border-radius: 6px; }
+      input, button { padding: 8px 10px; border-radius: 10px; border: 1px solid #ccc; }
+      button { cursor: pointer; }
+      pre { background:#0b1020; color:#d9e2ff; padding: 12px; border-radius: 12px; overflow:auto; }
+      .muted { color:#666; }
+    </style>
+  </head>
+  <body>
+    <h2>SensorLab (SSE)</h2>
+    <p class="muted">Streaming device readings over <code>EventSource</code>.</p>
+
+    <div class="row">
+      <div class="card">
+        <div><b>Device ID</b></div>
+        <input id="deviceId" value="wind-1" />
+        <div style="height:10px"></div>
+        <button id="connect">Connect SSE</button>
+        <button id="disconnect">Disconnect</button>
+        <div style="height:10px"></div>
+        <div class="muted" id="status">disconnected</div>
+      </div>
+
+      <div class="card">
+        <div><b>Quick API links</b></div>
+        <div style="height:10px"></div>
+        <div><a href="/health" target="_blank">/health</a></div>
+        <div><a href="/api/devices" target="_blank">/api/devices</a></div>
+        <div class="muted" style="margin-top:10px;">Try: <code>/api/stream?deviceId=wind-1</code></div>
+      </div>
+    </div>
+
+    <h3>Events</h3>
+    <pre id="log"></pre>
+
+    <script>
+      const log = document.getElementById("log");
+      const statusEl = document.getElementById("status");
+      const deviceIdEl = document.getElementById("deviceId");
+      let es = null;
+
+      function write(line) {
+        log.textContent = (line + "\n" + log.textContent).slice(0, 12000);
+      }
+
+      document.getElementById("connect").onclick = () => {
+        const deviceId = deviceIdEl.value.trim();
+        if (!deviceId) return;
+
+        if (es) es.close();
+        es = new EventSource(`/api/stream?deviceId=${encodeURIComponent(deviceId)}`);
+        statusEl.textContent = "connecting...";
+
+        es.addEventListener("hello", (e) => {
+          statusEl.textContent = "connected";
+          write("hello: " + e.data);
+        });
+
+        es.addEventListener("reading", (e) => {
+          write("reading: " + e.data);
+        });
+
+        es.onerror = () => {
+          statusEl.textContent = "error (check server)";
+        };
+      };
+
+      document.getElementById("disconnect").onclick = () => {
+        if (es) es.close();
+        es = null;
+        statusEl.textContent = "disconnected";
+      };
+    </script>
+  </body>
+</html>

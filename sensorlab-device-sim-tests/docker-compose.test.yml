@@ -1,0 +1,18 @@
+services:
+  server:
+    build:
+      context: .
+      dockerfile: docker/Dockerfile.server
+    ports:
+      - "8092:8092"
+
+  robot:
+    build:
+      context: .
+      dockerfile: docker/Dockerfile.robot
+    depends_on:
+      - server
+    environment:
+      - NO_PROXY=server,localhost,127.0.0.1
+    volumes:
+      - ./.reports:/tests/.reports
