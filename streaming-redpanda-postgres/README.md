@@ -3,10 +3,10 @@
 This project is a small streaming setup you can run locally with Docker.
 
 A producer generates `OrderEvent` messages and publishes them to Kafka (via Redpanda).
-A consumer reads events, validates them, and writes them into Postgres — safely.
+A consumer reads events, validates them, and writes them into Postgres safely.
 
 “Safely” means:
-- offsets are committed **only after** the database transaction succeeds (**at-least-once**)
+- offsets are committed **only after** the database transaction succeeds (**at least once**)
 - replays won’t create duplicates because the sink is **idempotent** (`event_id` is a primary key)
 
 ## Run (PowerShell)
