@@ -1,6 +1,6 @@
 ﻿# LocalStack IaC: SQS -> Python Consumer -> DynamoDB
 
-A tiny event-ingestion project that runs fully on your laptop.
+A tiny event ingestion project that runs fully on your laptop.
 
 Terraform creates a queue (SQS) and a table (DynamoDB) inside LocalStack.
 Then Python scripts:
