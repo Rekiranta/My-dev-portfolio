@@ -1,0 +1,141 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>BuildWatch  CI Monitor</title>
+    <link rel="stylesheet" href="/style.css" />
+  </head>
+  <body>
+    <main class="page">
+      <h1>BuildWatch  CI Monitor</h1>
+
+      <section class="controls">
+        <form id="new-build-form">
+          <label>
+            Branch
+            <input id="branch" name="branch" placeholder="main" />
+          </label>
+          <label>
+            Commit
+            <input id="commit" name="commit" placeholder="optional" />
+          </label>
+          <button type="submit">Trigger build</button>
+        </form>
+        <p class="hint">
+          This is a fake CI server: builds move from queued → running → passed/failed automatically.
+        </p>
+      </section>
+
+      <section class="table-section">
+        <h2>Recent builds</h2>
+        <table id="build-table">
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Branch</th>
+              <th>Commit</th>
+              <th>Status</th>
+              <th>Duration (s)</th>
+              <th>Triggered</th>
+            </tr>
+          </thead>
+          <tbody id="build-body">
+            <tr><td colspan="6">Waiting for data…</td></tr>
+          </tbody>
+        </table>
+      </section>
+    </main>
+
+    <script>
+      const bodyEl = document.getElementById("build-body");
+      const form = document.getElementById("new-build-form");
+      const branchInput = document.getElementById("branch");
+      const commitInput = document.getElementById("commit");
+
+      const builds = new Map();
+
+      function render() {
+        if (builds.size === 0) {
+          bodyEl.innerHTML =
+            '<tr><td colspan="6">No builds yet.</td></tr>';
+          return;
+        }
+        const rows = [];
+        for (const build of Array.from(builds.values())) {
+          rows.push(
+            "<tr>" +
+              `<td>${build.id}</td>` +
+              `<td>${build.branch}</td>` +
+              `<td>${build.commit}</td>` +
+              `<td class="status status-${build.status}">${build.status}</td>` +
+              `<td>${build.durationSec ?? ""}</td>` +
+              `<td>${new Date(
+                build.triggeredAt,
+              ).toLocaleTimeString()}</td>` +
+              "</tr>",
+          );
+        }
+        bodyEl.innerHTML = rows.join("");
+      }
+
+      function upsertBuild(build) {
+        builds.set(build.id, build);
+        const ordered = Array.from(builds.values()).sort(
+          (a, b) =>
+            new Date(b.triggeredAt).getTime() -
+            new Date(a.triggeredAt).getTime(),
+        );
+        builds.clear();
+        for (const b of ordered) builds.set(b.id, b);
+        render();
+      }
+
+      async function fetchInitial() {
+        const res = await fetch("/api/builds");
+        const data = await res.json();
+        if (Array.isArray(data.builds)) {
+          data.builds.forEach(upsertBuild);
+        }
+      }
+
+      form.addEventListener("submit", async (e) => {
+        e.preventDefault();
+        const branch = branchInput.value.trim();
+        const commit = commitInput.value.trim();
+        const payload = {};
+        if (branch) payload.branch = branch;
+        if (commit) payload.commit = commit;
+        const res = await fetch("/api/builds", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(payload),
+        });
+        if (!res.ok) {
+          alert("Failed to trigger build");
+          return;
+        }
+        branchInput.value = "";
+        commitInput.value = "";
+      });
+
+      fetchInitial();
+
+      const ev = new EventSource("/api/stream-builds");
+      ev.onmessage = (e) => {
+        try {
+          const msg = JSON.parse(e.data);
+          if (msg.type === "snapshot" && Array.isArray(msg.builds)) {
+            msg.builds.forEach(upsertBuild);
+          } else if (
+            msg.type === "build-update" ||
+            msg.type === "build-created"
+          ) {
+            if (msg.build) upsertBuild(msg.build);
+          }
+        } catch (err) {
+          console.error("Bad SSE message", err);
+        }
+      };
+    </script>
+  </body>
+</html>
