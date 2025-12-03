@@ -1,0 +1,6 @@
+customer_id,name,email,country,signup_date
+1,Ada Lovelace,ada@example.com,FI,2024-01-10
+2,Grace Hopper,grace@example.com,US,2024-02-05
+3,Linus Torvalds,linus@example.com,FI,2024-03-01
+4,Invalid Email,not-an-email,SE,2024-03-11
+5,Future Person,future@example.com,DE,2099-01-01
