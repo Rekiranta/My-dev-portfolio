@@ -40,16 +40,3 @@ Objects created:
 - **Mart tables**: `dim_customers`, `fct_orders`
 
 ---
-
-## Architecture
-
-```mermaid
-flowchart LR
-  A[CSV Sources] --> B[Validation: Pandera]
-  B -->|pass| C[DuckDB: raw.*]
-  B -->|fail| X[Stop and show validation errors]
-
-  C --> D[dbt: staging models (stg_*)]
-  D --> E[dbt: mart models (dim_*, fct_*)]
-  E --> F[Analytics-ready tables]
-```
