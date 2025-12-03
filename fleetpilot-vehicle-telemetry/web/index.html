@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>FleetPilot – Vehicle Telemetry Tracker</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <header>
+    <h1>FleetPilot</h1>
+    <p>Live vehicle telemetry dashboard</p>
+  </header>
+
+  <main>
+    <section class="panel">
+      <h2>Register vehicle</h2>
+      <form id="vehicle-form">
+        <label>
+          Name
+          <input type="text" id="vehicle-name" placeholder="Truck 42" />
+        </label>
+        <label>
+          Optional ID
+          <input type="text" id="vehicle-id" placeholder="auto-generated if empty" />
+        </label>
+        <button type="submit">Register</button>
+      </form>
+      <p id="vehicle-form-status" class="status"></p>
+    </section>
+
+    <section class="panel">
+      <h2>Live telemetry</h2>
+      <table id="telemetry-table">
+        <thead>
+          <tr>
+            <th>Vehicle</th>
+            <th>Lat</th>
+            <th>Lon</th>
+            <th>Speed (km/h)</th>
+            <th>Fuel (%)</th>
+            <th>Last update</th>
+          </tr>
+        </thead>
+        <tbody>
+          <!-- rows injected by JS -->
+        </tbody>
+      </table>
+    </section>
+  </main>
+
+  <footer>
+    <small>Demo project  FleetPilot Vehicle Telemetry Tracker</small>
+  </footer>
+
+  <script src="app.js"></script>
+</body>
+</html>
