@@ -1,0 +1,10 @@
+﻿.venv/
+__pycache__/
+*.pyc
+.env
+.terraform/
+.terraform.lock.hcl
+terraform.tfstate
+terraform.tfstate.backup
+outputs.json
+.localstack/
