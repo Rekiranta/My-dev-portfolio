@@ -1,0 +1,15 @@
+﻿services:
+  postgres:
+    image: postgres:16
+    container_name: etl-postgres
+    environment:
+      POSTGRES_USER: app
+      POSTGRES_PASSWORD: app
+      POSTGRES_DB: etl
+    ports:
+      - "5433:5432"
+    volumes:
+      - etl_pgdata:/var/lib/postgresql/data
+
+volumes:
+  etl_pgdata:
