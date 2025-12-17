@@ -1,7 +1,19 @@
-from flask import Flask, render_template, request, redirect, url_for
+from flask import Flask, render_template, request, redirect, url_for, jsonify
 from models import get_connection, init_db
 
 app = Flask(__name__)
+
+
+@app.route("/health")
+def health():
+    """Health check endpoint."""
+    try:
+        conn = get_connection()
+        conn.execute("SELECT 1")
+        conn.close()
+        return jsonify({"ok": True, "database": "up"})
+    except Exception as e:
+        return jsonify({"ok": False, "error": str(e)}), 503
 
 
 

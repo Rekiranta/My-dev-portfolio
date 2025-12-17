@@ -10,6 +10,17 @@ init_db()
 def index():
     return render_template("index.html")
 
+@app.route("/health")
+def health():
+    """Health check endpoint."""
+    try:
+        conn = get_connection()
+        conn.execute("SELECT 1")
+        conn.close()
+        return jsonify({"ok": True, "database": "up"})
+    except Exception as e:
+        return jsonify({"ok": False, "error": str(e)}), 503
+
 @app.route("/upload", methods=["POST"])
 def upload_data():
     data = request.json.get("values", [])
