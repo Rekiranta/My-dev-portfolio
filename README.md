@@ -1,26 +1,28 @@
 # My Developer Portfolio
 
-A collection of 20+ hands-on projects demonstrating DevOps, cloud engineering, and data pipeline skills. Each project is self-contained with its own documentation and can be run locally.
+A collection of hands-on projects demonstrating DevOps, cloud engineering, and data pipeline skills. Each project is self-contained with its own documentation.
 
-## Tech Stack Overview
+## Featured Projects (Pinned Repositories)
 
-| Category | Technologies |
-|----------|-------------|
-| **Languages** | Python, TypeScript, JavaScript |
-| **Frameworks** | FastAPI, Flask, Node.js, React |
-| **Containers** | Docker, Docker Compose, Kubernetes |
-| **CI/CD** | GitHub Actions, Terraform |
-| **Databases** | PostgreSQL, Redis, DynamoDB |
-| **Streaming** | Redpanda (Kafka), WebSockets, SSE |
-| **Cloud** | AWS (LocalStack), Terraform |
+These are my top projects, available as standalone repositories:
 
-## Projects by Category
+| Project | Description | Tech |
+|---------|-------------|------|
+| [terraform-k8s-blueprints-ci](https://github.com/Rekiranta/terraform-k8s-blueprints-ci) | Kubernetes infrastructure with Terraform and GitHub Actions CI | Terraform, Kubernetes, GitHub Actions |
+| [streaming-redpanda-postgres](https://github.com/Rekiranta/streaming-redpanda-postgres) | Event streaming pipeline with idempotent PostgreSQL sink | Redpanda (Kafka), PostgreSQL, Python |
+| [data-pipeline-elt-dbt](https://github.com/Rekiranta/data-pipeline-elt-dbt) | Modern ELT pipeline with dbt transformations and data validation | dbt, DuckDB, Pandera |
+| [localstack-sqs-dynamodb-iac](https://github.com/Rekiranta/localstack-sqs-dynamodb-iac) | AWS infrastructure locally with SQS and DynamoDB | LocalStack, Terraform, boto3 |
+| [devops-ci-demo](https://github.com/Rekiranta/devops-ci-demo) | CI/CD pipeline with automated testing | Flask, Pytest, GitHub Actions |
+| [fastapi-redis-cache-api](https://github.com/Rekiranta/fastapi-redis-cache-api) | REST API with Redis caching and cache-aside pattern | FastAPI, Redis, Pytest |
+
+---
+
+## Additional Projects
 
 ### API & Web Services
 
 | Project | Description | Tech |
 |---------|-------------|------|
-| [fastapi-redis-cache-api](./fastapi-redis-cache-api) | REST API with Redis caching and dependency injection | FastAPI, Redis, Pytest |
 | [data-quality-api](./data-quality-api) | Data validation API with quality checks | FastAPI, Pydantic |
 | [task-manager-web](./task-manager-web) | Web-based task management application | Flask, JavaScript |
 | [project-planer-flask](./project-planer-flask) | Project planning tool | Flask, SQLite |
@@ -30,8 +32,6 @@ A collection of 20+ hands-on projects demonstrating DevOps, cloud engineering, a
 
 | Project | Description | Tech |
 |---------|-------------|------|
-| [streaming-redpanda-postgres](./streaming-redpanda-postgres) | Kafka streaming with idempotent Postgres sink | Redpanda, PostgreSQL, Python |
-| [data-pipeline-elt-dbt](./data-pipeline-elt-dbt) | ELT pipeline with dbt transformations | dbt, PostgreSQL |
 | [batch-etl-validate-postgres](./batch-etl-validate-postgres) | Batch ETL with data validation | Python, PostgreSQL |
 | [local-serverless-etl](./local-serverless-etl) | Serverless ETL simulation with LocalStack | LocalStack, Lambda, S3 |
 | [local-streaming-pipeline](./local-streaming-pipeline) | Local streaming data pipeline | Python, Docker |
@@ -40,17 +40,9 @@ A collection of 20+ hands-on projects demonstrating DevOps, cloud engineering, a
 
 | Project | Description | Tech |
 |---------|-------------|------|
-| [devops-ci-demo](./devops-ci-demo) | CI pipeline with automated testing | Flask, Pytest, GitHub Actions |
 | [devops-statusboard](./devops-statusboard) | Real-time DevOps status dashboard | React, Flask, WebSocket |
 | [devops-local-release-pipeline](./devops-local-release-pipeline) | Local release pipeline simulation | Python, Docker |
-| [terraform-k8s-blueprints-ci](./terraform-k8s-blueprints-ci) | Kubernetes infrastructure with Terraform | Terraform, Kubernetes |
 | [buildwatch-ci-monitor](./buildwatch-ci-monitor) | CI/CD build monitoring tool | Node.js |
-
-### Infrastructure as Code
-
-| Project | Description | Tech |
-|---------|-------------|------|
-| [localstack-sqs-dynamodb-iac](./localstack-sqs-dynamodb-iac) | AWS infrastructure locally with LocalStack | LocalStack, SQS, DynamoDB, Terraform |
 
 ### Real-time & Monitoring
 
@@ -68,6 +60,20 @@ A collection of 20+ hands-on projects demonstrating DevOps, cloud engineering, a
 | [sensorlab-device-sim-tests](./sensorlab-device-sim-tests) | IoT sensor device simulation | Python |
 | [node-chargelab-ev-sessions](./node-chargelab-ev-sessions) | EV charging session simulator | Node.js |
 | [fleetpilot-vehicle-telemetry](./fleetpilot-vehicle-telemetry) | Vehicle fleet telemetry system | Python |
+
+---
+
+## Tech Stack Overview
+
+| Category | Technologies |
+|----------|-------------|
+| **Languages** | Python, TypeScript, JavaScript |
+| **Frameworks** | FastAPI, Flask, Node.js, React |
+| **Containers** | Docker, Docker Compose, Kubernetes |
+| **CI/CD** | GitHub Actions, Terraform |
+| **Databases** | PostgreSQL, Redis, DynamoDB, DuckDB |
+| **Streaming** | Redpanda (Kafka), WebSockets, SSE |
+| **Cloud** | AWS (LocalStack), Terraform |
 
 ## Getting Started
 
